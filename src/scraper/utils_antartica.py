@@ -51,14 +51,8 @@ def scrap(books, dict_books):
                 price = book.find("span", class_="price-wrapper").text.strip()
                 author = book.find("a", class_="link-autor-search-result").text.strip()
                 href = book.find("a", class_="product-item-photo")["href"]
-                img = book.find("img", class_="product-image-photo")["src"]
-                dict_books[name] = [price, author, img]
-                print(name)
-                print(price)
-                print(author)
-                print(href)
-                print(img)
-                print("")
+                # img = book.find("img", class_="product-image-photo")["src"]
+                dict_books[name] = [price, author, href]
         except Exception as e:
             print(f'Error: {e}\n')
 
@@ -95,9 +89,28 @@ def search_for_books(links, dict_books, max_pages, max_workers):
                 if count >= max_pages:
                     break
 
-def create_csv(dict_books):                    
+def create_csv(dict_books):     
     with open('librerias/antartica.csv', mode='w') as file:
         writer = csv.writer(file)
-        writer.writerow(['Nombre', 'Precio', 'Autor', 'Imagen'])
+        writer.writerow(['Titulo', 'Autor', 'Precio', 'Link', 'ISBN'])
         for name, details in dict_books.items():
-            writer.writerow([name, details[0], details[1], details[2]])
+            writer.writerow([name, details[1], details[0], details[2], details[3]])
+
+
+def search_isbn(dict_books):
+    
+    for book in dict_books:
+        try:
+            # https://www.antartica.cl/g3-honor-y-traicion-9789566239055.html
+            href = dict_books[book][2]
+            isbn = href.split('-')[-1].split('.')[0]
+            print(f'ISBN: {isbn}')
+            dict_books[book].append(isbn)
+        except Exception as e:
+            print(f'Error al obtener el ISBN: {e}')
+    return dict_books
+        
+
+
+
+        
