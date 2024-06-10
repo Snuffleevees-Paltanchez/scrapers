@@ -92,7 +92,7 @@ def search_for_books(links, dict_books, max_pages, max_workers):
 def create_csv(dict_books):     
     with open('librerias/antartica.csv', mode='w') as file:
         writer = csv.writer(file)
-        writer.writerow(['Titulo', 'Autor', 'Precio', 'Link', 'ISBN'])
+        writer.writerow(['Title', 'Author', 'Price', 'Link', 'ISBN'])
         for name, details in dict_books.items():
             writer.writerow([name, details[1], details[0], details[2], details[3]])
 
